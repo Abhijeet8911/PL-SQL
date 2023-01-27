@@ -1,2 +1,2 @@
-# PL-SQL
+# Oracle PL-SQL
 Overview of PL/SQL
