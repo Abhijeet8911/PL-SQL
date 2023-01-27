@@ -522,10 +522,196 @@ EXECUTE manage_emp.edit_emp(201,'Ron');
 	
 	
 ---Advanced PACKAGE
-Creating Bodiless PACKAGE
-Working with Overloading - Creating Function/Procedure with Same name but different parameter
-Working with Forward Declaration -  
-Creating One Time Only procedure = invoked when perticular session has started Eg= wanted to set some value which dont want to change later
+1.Creating Bodiless PACKAGE in specfication - Just to define some CONSTANT
+2.Working with Overloading - Creating Function/Procedure with Same name but different parameter
+3.Working with Forward Declaration -  Eg. you have a multiple package or function and within a particular package you are calling some other PACKAGE
+				So this particular package has to be atleast declared first, if we have defined the particular package before its fine but if you going to define it later at least you will have to give a forward Declaration
+4.Creating One Time Only procedure = invoked when perticular session has started Eg= wanted to set some value which dont want to change later
 
+1. Creating Bodiless PACKAGE
 
+CREATE or REPLACE Package global_constants IS
+	mile_to_km CONSTANT NUMBER := 1.609;
+	km_to _mile CONSTANT NUMBER := 0.621;
+END;
+/
+
+execute dbms_output.put_line( 20 * global_constants.mile_to_km );
+
+2.Working with Overloading
+
+CREATE OR REPLACE PACKAGE BODY manage_emp IS
+	PROCEDURE add_emp(p_id NUMBER, p_name VARCHAR2);
+	PROCEDURE add_emp(p_id NUMBER, p_name VARCHAR2, p_sal NUMBER);
+	PROCEDURE add_emp(p_id NUMBER, p_name VARCHAR2, p_sal NUMBER, p_dept NUMBER);
+
+End manage_emp;
+/
+
+-- Create a Body:
+CREATE OR REPLACE PACKAGE BODY manage_emp IS
+	PROCEDURE add_emp(p_id NUMBER, p_name VARCHAR2) IS
+	BEGIN
+		dbms_output.put_line('Employee added : 1');
+	END add_emp;
 	
+	PROCEDURE edit_emp(p_id NUMBER, p_name VARCHAR2, p_sal NUMBER) IS
+	BEGIN
+		dbms_output.put_line('Employee Updated : 2');
+	END add_emp;
+
+	PROCEDURE add_emp(p_id NUMBER, p_name VARCHAR2, p_sal NUMBER, p_dept NUMBER) is 
+	BEGIN
+		dbms_output.put_line('Employee Updated : 3');
+	END add_emp;	
+
+END;
+/
+-- Execute PACKAGE
+
+EXECUTE manage_emp.add_emp(201,'Andy');
+
+EXECUTE manage_emp.edit_emp(201,'Andy',50000);
+
+EXECUTE manage_emp.edit_emp(201,'Andy',50000,20);
+
+4.Creating One Time Only procedure
+
+--Creating a Package: 
+CREATE OR REPLACE PACKAGE manage_emp IS
+	PROCEDURE add_emp(p_id NUMBER, p_name VARCHAR2);
+	PROCEDURE edit_emp(p_id NUMBER, p_name VARCHAR2);
+END manage_emp;
+/
+
+-- Create a Body:
+CREATE OR REPLACE PACKAGE BODY manage_emp IS
+	PROCEDURE search_emp(p_id NUMBER);
+
+	PROCEDURE add_emp(p_id NUMBER, p_name VARCHAR2) IS
+	BEGIN
+		dbms_output.put_line('Employee added');
+	END add_emp;
+	
+	PROCEDURE edit_emp(p_id NUMBER, p_name VARCHAR2) IS
+	BEGIN
+		search_emp(p_id);
+		dbms_output.put_line('Employee Updated');
+	END edit_emp;
+
+	PROCEDURE search_emp(p_id NUMBER) IS
+	BEGIN
+		dbms_output.put_line('Employee Found');
+	END search_emp;
+END;
+/
+
+
+-- Database Triggers ---------------------------------------------------------------------------------------------------------------
+
+It is a named PL/SQL block and planned for particular event and timing
+IS executed implicit on that event 
+It is designed to perform related actions or to centralize global actions
+Excessive use of triggers may result complex interdependencies
+
+ Application TRIGGER
+ Database TRIGGER 
+	- DML TRIGGER - INSERT/UPDATE/DELETE
+	- INSTEAD of TRIGGER - DML operation with the VIEW
+	- DDL TRIGGER - restrict to Drop table
+	
+1. DML TRIGGER
+
+CREATE OR REPLACE TRIGGER emp_insert
+AFTER INSERT ON Employees
+BEGIN
+	dbms_output.put_line('Record Inserted');
+end;
+/
+
+
+CREATE OR REPLACE TRIGGER restricted_insert
+AFTER INSERT OR UPDATE OR DELETE ON Employees
+BEGIN
+	IF (TO_CHAR(SYSDATE, 'HH24:MI') NOT BETWEEN '9:00' AND '18:00') THEN
+		RAISE_APPLICATION_ERROR(-20123, 'You can manipulate Employee only between 9:00 AM to 6:00 PM.');
+	End IF;
+end;
+/
+
+--Salary CHECK: NEW and OLD keyword can be use with FOR EACH ROW only.
+CREATE OR REPLACE TRIGGER salary_update_check
+BEFORE UPDATE OF salary ON Employees
+FOR EACH ROW
+BEGIN
+	IF : NEW.salary < OLD.salary THEN
+				RAISE_APPLICATION_ERROR(-20125, 'Update salary cannot be less than current salary');
+	END IF;
+end;
+/
+
+
+2. INSTEAD of TRIGGER  - DML operation with the VIEW
+-- new table created tbl_employees
+empid	not null	number(4)
+firstname			varchar2(20)
+lastname			varchar2(20)
+salary				number(10,2)
+dept				number(3)
+
+tbl_departments:
+deptid				number(3)
+deptname			varchar2(20)
+
+VIEW created empdata:	empid	firstname	lastname	daptname	salary 
+
+Agenda- when we insert any data in this view(empdata) then record must entered into tbl_employees table
+
+CREATE OR REPLACE TRIGGER emp_dept_insert
+INSTEAD OF INSERT on empdata
+FOR EACH ROW
+DECLARE
+	v_did NUMBER;
+BEGIN 
+	SELECT deptid into v_did from Departments where LOWER(dept_name) = LOWER(:NEW.dept_name);
+	
+	IF INSERTING THEN
+			INSERT INTO tbl_employees VALUES (:NEW.empid, :NEW.firstname, :new.lastname, NEW.salary, v_did);
+	END IF;
+end;
+/
+
+3.DDL TRIGGER
+
+CREATE or REPLACE TRIGGER restrict_drop_table
+BEFORE drop on DATABASE
+BEGIN
+	RAISE_APPLICATION_ERROR(-20125,'Cannot drop table from this database');
+END:
+/
+
+
+LOGON and LOGOFF TRIGGER
+
+TABLE NAME - login_details
+loginid		varchar2(20)
+logintime	DATE
+action		varchar2(20)
+
+CREATE OR REPLACE TRIGGER login_trigger
+AFTER LOGON ON SCHEMA
+BEGIN
+	INSERT INTO login_details VALUES(USER, TO_CHAR(SYSDATE, 'DD-MM-YYY HH24:MI:SS'),'Login');
+END;
+/
+
+CREATE OR REPLACE TRIGGER logoff_trigger
+AFTER LOGOFF ON SCHEMA
+BEGIN
+	INSERT INTO login_details VALUES(USER, TO_CHAR(SYSDATE, 'DD-MM-YYY HH24:MI:SS'),'Logout');
+END;
+/
+
+testing- 
+disc
+connect 
