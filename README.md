@@ -1,4 +1,5 @@
 # Oracle PL-SQL
+## [UPDATE IN PROGRESS]
 Overview of PL/SQL
 
 --PLSQL -----------------------------------------------------------
@@ -9,18 +10,19 @@ Row name = deptid, dept_name, manager_id, location_id
 
 -- Basic Syntax of PL/SQL: -----------------------------------------------------------
 
-set serveroutput on;
+````set serveroutput on;
 DECLARE
 BEGIN
 EXCEPTION
 END
 /
+````
 -----------------------------------------------------------
-BEGIN 
+````BEGIN 
 	dbms_output.put_line('Welcome')
 end;
 /
-
+````
 -- To display this on output use -----------------------------------------------------------
 set serveroutput ON
 BEGIN 
