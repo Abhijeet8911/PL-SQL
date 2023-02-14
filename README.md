@@ -26,13 +26,16 @@ end;
 /
 ````
 -- To display this on output use -----------------------------------------------------------
+````
 set serveroutput ON
 BEGIN 
 	dbms_output.put_line('Welcome')
 end;
 /
+````
 
 -- To define and declare variable -----------------------------------------------------------
+````
 DECLARE
 	var1 VARCHAR2(20);
 	num1 number(3);
@@ -43,8 +46,10 @@ begin
 	dbms_output.put_line('Num1 : '|| num1);
 end;
 /
+````
 
 -- Get values from table then assign to a variable -----------------------------------------------------------
+````
 DECLARE
 	name Employees.First_name%TYPE; --to get the type attribute
 	sal Employees.Salary%TYPE;
@@ -57,8 +62,10 @@ begin
 	dbms_output.put_line('Salary : '|| sal);
 end;
 /
+````
 
 --To get the complete row in a particular variable use ROWTYPE attribute -----------------------------------------------------------
+````
 DECLARE
 	record Employees%ROWTYPE;
 BEGIN
@@ -67,13 +74,14 @@ BEGIN
 	dbms_output.put_line(record.First_name ||' | '||record.Last_name ||' | '|| record.Salary);
 end;
 /
+````
 
 --Contional Statement -----------------------------------------------------------
 -- IF THEN END IF
 -- IF THEN ELSE END IF
 -- IF THEN ELSIF END IF
 -- CASE
-
+````
 DECLARE
 	deptid NUMBER(2);
 	sal NUMBER(10,2);
@@ -96,8 +104,10 @@ begin
 	dbms_output.put_line(sal || ' : ' || deptid);
 end;
 /
+````
 
 --Case 
+````
 DECLARE
 	num number(1):= &weekday;
 	dayname varchar2(10);
@@ -115,8 +125,10 @@ BEGIN
 	dbms_output.put_line(dayname);
 END;
 /	
+````
  
 --LOOPS -----------------------------------------------------------
+````
 set serveroutput on;
 DECLARE
 	i number(2);
@@ -129,8 +141,10 @@ begin
 	end loop;
 end;
 /
+````
 
 -- WHILE loop
+````
 set serveroutput on;
 DECLARE
 	i number(2);
@@ -143,8 +157,10 @@ begin
 	end loop;
 end;
 /
+````
 
 -- FOR LOOP
+````
 SET serveroutput on;
 begin 
 	for i in 1..10 LOOP
@@ -154,6 +170,7 @@ begin
 		dbms_output.put_line('reverse i = '||i);	
 	end loop;
 end;
+````
 
 -- CURSOR : -----------------------------------------------------------
 -- A work area is used by the oracle engine for its internal processing and sorting the information.
@@ -183,6 +200,7 @@ end;
 		Returns the number of rows affected by an INSERT, UPDATE, or DELETE statement, 
 		or returned by a SELECT INTO statement.
 		
+````
 SET serveroutput on;
 DECLARE
 	cnt number(3);
@@ -193,6 +211,7 @@ begin
 	dbms_output.put_line(cnt || ' Rows updated');
 end;
 /
+````
 
 -- Explicit CURSOR
 	Explicit cursors are programmer-defined cursors for gaining more control over the context area.
@@ -202,6 +221,7 @@ end;
 	FETCH
 	CLOSE
 
+````
 SET serveroutput on;
 DECLARE
 	v_empno Employees.Emp_id%TYPE;
@@ -219,9 +239,11 @@ BEGIN
 	CLOSE emp_cursor;
 END;
 /
+````
 
 -- Parameterized CURSOR
 
+````
 SET serveroutput on;
 DECLARE
 	v_empno Employees.Emp_id%TYPE;
@@ -250,10 +272,12 @@ BEGIN
 	dbms_output.put_line('----------------------------------------------------');
 END;
 /
+````
 
 
 -- FOR UPDATE CLAUSE : whole record will get updated. 
 
+````
 SET serveroutput on;
 DECLARE
 	CURSOR emp_cursor IS
@@ -265,9 +289,11 @@ BEGIN
 	UPDATE Employees SET salary = salary +10 where deptid = 50;
 END;
 /
+````
 
 -- WHERE CURRENT OF CLAUSE : current record will get updated.
 
+````
 SET serveroutput on;
 DECLARE
 	CURSOR sal_cursor IS
@@ -283,9 +309,11 @@ BEGIN
 			where CURRENT OF sal_cursor;
 END;
 /
+````
 
 -- Exception Handling -----------------------------------------------------------
 --Predefined exception - Implicit
+````
 SET serveroutput on;
 DECLARE
 	v_lastname Employees.Last_name%TYPE;
@@ -306,8 +334,10 @@ EXCEPTION
 		dbms_output.put_line('Some Erros found');
 END;
 /
+````
 
 --User-defined exception - Explicit
+````
 SET serveroutput on;
 DECLARE
 	v_lastname Employees.Last_name%TYPE;
@@ -334,8 +364,7 @@ EXCEPTION
 		dbms_output.put_line('Some Erros found');
 END;
 /
-
-
+````
 
 -- PROCEDURE -----------------------------------------------------------
 
@@ -355,11 +384,13 @@ END;
 	  < procedure_body > 
 	END procedure_name; 
 --Eg :
+````
 CREATE or REPLACE PROCEDURE test_procedure IS
 BEGIN
 	dbms_output.put_line('Test Procedure');
 END;
 /
+````
 	
 	IN parameters: The IN parameter can be referenced by the procedure or function. 
 					The value of the parameter cannot be overwritten by the procedure or the function.
@@ -370,6 +401,7 @@ END;
 
 
 -- IN MODE
+````
 CREATE OR REPLACE PROCEDURE add_dept
 (
 	pdid IN Departments.deptid%TYPE,
@@ -382,12 +414,17 @@ BEGIN
 	dbms_output.put_line('Dept. Added.');
 End;
 /
+````
+
 --Run--
+````
 	Execute  add_dept(500, 'New Dept', 105, 1000);
+````
 
 
 
 -- OUT MODE
+````
 CREATE OR REPLACE PROCEDURE add_dept
 (
 	pdid IN Departments.deptid%TYPE,
@@ -400,7 +437,10 @@ BEGIN
 	where deptid = p_did;
 End;
 /
+````
+
 --Run 
+````
 DECLARE 
 	dname varchar2(20);
 BEGIN
@@ -408,9 +448,11 @@ BEGIN
 	dbms_output.put_line(dname);
 END;
 /
+````
 
 
 -- IN OUT MODE
+````
 CREATE or REPLACE PROCEDURE format_phone_number( p_phone_no IN OUT varchar2 ) IS
 BEGIN
 	p_phone_no := '(' || SUBSTR(p_phone_no,1,3) || ')' ||
@@ -418,8 +460,10 @@ BEGIN
 					SUBSTR(p_phone_no,7,4);
 END;
 /
+````
 
 --Run
+````
 DECLARE
 	v_p_no VARCHAR2(15);
 BEGIN
@@ -428,6 +472,7 @@ BEGIN
 	dbms_output.put_line(v_p_no);
 END;
 /
+````
 
 
 -- FUNCTION -----------------------------------------------------------
@@ -437,6 +482,7 @@ provides reusability
 can be invoked by a select clause, where clause
 
 --Syntax
+````
 CREATE [OR REPLACE] FUNCTION function_name 
 [(parameter_name  type [, ...])] 
 
@@ -451,19 +497,26 @@ BEGIN
    exception_section;
 
 END [function_name];
+````
 
 --Eg: *****************************
+````
  
 CREATE or REPLACE FUNCTION get_tax_amount(p_sal number) RETURN number IS 
 BEGIN
 	return (p_sal * 10/100);
 END;
 /
+````
+
 --run
+````
 select First_name, Last_name, Salary - get_tax_amount(Salary) as Inhand_sal
 from Employees;
+````
 
 --Eg: *****************************
+````
 
 DECLARE  
    a number;  
@@ -490,6 +543,7 @@ BEGIN
    dbms_output.put_line(' Maximum of (23,45): ' || c);  
 END;  
 /  
+````
 
 -- PACKAGE -----------------------------------------------------------
 
@@ -501,11 +555,13 @@ END;
  On the FIrst call of packaged block, whole package is loaded in memory
  
 --Creating a Package: 
+````
 CREATE OR REPLACE PACKAGE manage_emp IS
 	PROCEDURE add_emp(p_id NUMBER, p_name VARCHAR2);
 	PROCEDURE edit_emp(p_id NUMBER, p_name VARCHAR2);
 END manage_emp;
 /
+
 
 -- Create a Body:
 CREATE OR REPLACE PACKAGE BODY manage_emp IS
@@ -521,12 +577,14 @@ CREATE OR REPLACE PACKAGE BODY manage_emp IS
 
 END;
 /
+````
 
 -- Execute PACKAGE
-
+````
 EXECUTE manage_emp.add_emp(201,'Andy');
 
 EXECUTE manage_emp.edit_emp(201,'Ron');
+````
 	
 	
 ---Advanced PACKAGE
@@ -537,6 +595,7 @@ EXECUTE manage_emp.edit_emp(201,'Ron');
 4.Creating One Time Only procedure = invoked when perticular session has started Eg= wanted to set some value which dont want to change later
 
 1. Creating Bodiless PACKAGE
+````
 
 CREATE or REPLACE Package global_constants IS
 	mile_to_km CONSTANT NUMBER := 1.609;
@@ -545,8 +604,10 @@ END;
 /
 
 execute dbms_output.put_line( 20 * global_constants.mile_to_km );
+````
 
 2.Working with Overloading
+````
 
 CREATE OR REPLACE PACKAGE BODY manage_emp IS
 	PROCEDURE add_emp(p_id NUMBER, p_name VARCHAR2);
@@ -555,8 +616,10 @@ CREATE OR REPLACE PACKAGE BODY manage_emp IS
 
 End manage_emp;
 /
+````
 
 -- Create a Body:
+````
 CREATE OR REPLACE PACKAGE BODY manage_emp IS
 	PROCEDURE add_emp(p_id NUMBER, p_name VARCHAR2) IS
 	BEGIN
@@ -575,24 +638,30 @@ CREATE OR REPLACE PACKAGE BODY manage_emp IS
 
 END;
 /
--- Execute PACKAGE
+````
 
+-- Execute PACKAGE
+````
 EXECUTE manage_emp.add_emp(201,'Andy');
 
 EXECUTE manage_emp.edit_emp(201,'Andy',50000);
 
 EXECUTE manage_emp.edit_emp(201,'Andy',50000,20);
+````
 
 4.Creating One Time Only procedure
 
 --Creating a Package: 
+````
 CREATE OR REPLACE PACKAGE manage_emp IS
 	PROCEDURE add_emp(p_id NUMBER, p_name VARCHAR2);
 	PROCEDURE edit_emp(p_id NUMBER, p_name VARCHAR2);
 END manage_emp;
 /
+````
 
 -- Create a Body:
+````
 CREATE OR REPLACE PACKAGE BODY manage_emp IS
 	PROCEDURE search_emp(p_id NUMBER);
 
@@ -613,6 +682,7 @@ CREATE OR REPLACE PACKAGE BODY manage_emp IS
 	END search_emp;
 END;
 /
+````
 
 
 -- Database Triggers -----------------------------------------------------------
@@ -629,6 +699,7 @@ Excessive use of triggers may result complex interdependencies
 	- DDL TRIGGER - restrict to Drop table
 	
 1. DML TRIGGER
+````
 
 CREATE OR REPLACE TRIGGER emp_insert
 AFTER INSERT ON Employees
@@ -636,7 +707,9 @@ BEGIN
 	dbms_output.put_line('Record Inserted');
 end;
 /
+````
 
+````
 
 CREATE OR REPLACE TRIGGER restricted_insert
 AFTER INSERT OR UPDATE OR DELETE ON Employees
@@ -646,8 +719,10 @@ BEGIN
 	End IF;
 end;
 /
+````
 
 --Salary CHECK: NEW and OLD keyword can be use with FOR EACH ROW only.
+````
 CREATE OR REPLACE TRIGGER salary_update_check
 BEFORE UPDATE OF salary ON Employees
 FOR EACH ROW
@@ -657,6 +732,7 @@ BEGIN
 	END IF;
 end;
 /
+````
 
 
 2. INSTEAD of TRIGGER  - DML operation with the VIEW
@@ -674,7 +750,7 @@ deptname			varchar2(20)
 VIEW created empdata:	empid	firstname	lastname	daptname	salary 
 
 Agenda- when we insert any data in this view(empdata) then record must entered into tbl_employees table
-
+````
 CREATE OR REPLACE TRIGGER emp_dept_insert
 INSTEAD OF INSERT on empdata
 FOR EACH ROW
@@ -688,15 +764,18 @@ BEGIN
 	END IF;
 end;
 /
+````
 
 3.DDL TRIGGER
 
+````
 CREATE or REPLACE TRIGGER restrict_drop_table
 BEFORE drop on DATABASE
 BEGIN
 	RAISE_APPLICATION_ERROR(-20125,'Cannot drop table from this database');
 END:
 /
+````
 
 
 LOGON and LOGOFF TRIGGER
@@ -705,20 +784,23 @@ TABLE NAME - login_details
 loginid		varchar2(20)
 logintime	DATE
 action		varchar2(20)
-
+````
 CREATE OR REPLACE TRIGGER login_trigger
 AFTER LOGON ON SCHEMA
 BEGIN
 	INSERT INTO login_details VALUES(USER, TO_CHAR(SYSDATE, 'DD-MM-YYY HH24:MI:SS'),'Login');
 END;
 /
+````
 
+````
 CREATE OR REPLACE TRIGGER logoff_trigger
 AFTER LOGOFF ON SCHEMA
 BEGIN
 	INSERT INTO login_details VALUES(USER, TO_CHAR(SYSDATE, 'DD-MM-YYY HH24:MI:SS'),'Logout');
 END;
 /
+````
 
 testing- 
 disc
