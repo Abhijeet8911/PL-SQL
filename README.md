@@ -1,33 +1,34 @@
 # Oracle PL-SQL
 Overview of PL/SQL
 
---PLSQL -------------------------------------------------------------------------------
+--PLSQL -----------------------------------------------------------
 Table1 name = Employees
 Row name = First_name, Last_name, Salary, Emp_id, deptid
 Table2 name = Departments
 Row name = deptid, dept_name, manager_id, location_id
 
--- Basic Syntax of PL/SQL: -------------------------------------------------------------------------------
+-- Basic Syntax of PL/SQL: -----------------------------------------------------------
+
 set serveroutput on;
 DECLARE
 BEGIN
 EXCEPTION
 END
 /
-------------------------------------------------------------------------------------------------------------
-EGIN 
+-----------------------------------------------------------
+BEGIN 
 	dbms_output.put_line('Welcome')
 end;
 /
 
--- To display this on output use -------------------------------------------------------------------------------
+-- To display this on output use -----------------------------------------------------------
 set serveroutput ON
 BEGIN 
 	dbms_output.put_line('Welcome')
 end;
 /
 
--- To define and declare variable -------------------------------------------------------------------------------
+-- To define and declare variable -----------------------------------------------------------
 DECLARE
 	var1 VARCHAR2(20);
 	num1 number(3);
@@ -39,7 +40,7 @@ begin
 end;
 /
 
--- Get values from table then assign to a variable -------------------------------------------------------------------------------
+-- Get values from table then assign to a variable -----------------------------------------------------------
 DECLARE
 	name Employees.First_name%TYPE; --to get the type attribute
 	sal Employees.Salary%TYPE;
@@ -53,7 +54,7 @@ begin
 end;
 /
 
---To get the complete row in a particular variable use ROWTYPE attribute -------------------------------------------------------------
+--To get the complete row in a particular variable use ROWTYPE attribute -----------------------------------------------------------
 DECLARE
 	record Employees%ROWTYPE;
 BEGIN
@@ -63,7 +64,7 @@ BEGIN
 end;
 /
 
---Contional Statement -------------------------------------------------------------------------------------
+--Contional Statement -----------------------------------------------------------
 -- IF THEN END IF
 -- IF THEN ELSE END IF
 -- IF THEN ELSIF END IF
@@ -111,7 +112,7 @@ BEGIN
 END;
 /	
  
---LOOPS ----------------------------------------------------------------------------------------------------
+--LOOPS -----------------------------------------------------------
 set serveroutput on;
 DECLARE
 	i number(2);
@@ -150,7 +151,7 @@ begin
 	end loop;
 end;
 
--- CURSOR : -------------------------------------------------------------------------------------------------------------------
+-- CURSOR : -----------------------------------------------------------
 -- A work area is used by the oracle engine for its internal processing and sorting the information.
 -- Work area is private to SQL operation. Cursor is the PL/SQL construct that allows the use to name the work area and access the stored information in it.
 -- The major function of a cursor is to retrieve data, one row at a time, from a result set, unlike the sql command which operate on all rows in the result set at one time. 
@@ -279,7 +280,7 @@ BEGIN
 END;
 /
 
--- Exception Handling -------------------------------------------------------------------------------------------------------
+-- Exception Handling -----------------------------------------------------------
 --Predefined exception - Implicit
 SET serveroutput on;
 DECLARE
@@ -332,7 +333,7 @@ END;
 
 
 
--- PROCEDURE ---------------------------------------------------------------------------------------------------------------
+-- PROCEDURE -----------------------------------------------------------
 
 	A subprogram is a program unit/module that performs a particular task.
 	--Anonymous PL/SQL block = unnamed block || No Reusability
@@ -425,7 +426,7 @@ END;
 /
 
 
--- FUNCTION ---------------------------------------------------------------------------------------------------------------
+-- FUNCTION -----------------------------------------------------------
 
 IS a named PL/SQL block which returns a VALUE
 provides reusability
@@ -486,7 +487,7 @@ BEGIN
 END;  
 /  
 
--- PACKAGE ---------------------------------------------------------------------------------------------------------------
+-- PACKAGE -----------------------------------------------------------
 
  It group logically related subprograms. Divided into 2 parts i.e. Specification and BODY
  PUBLIC package constructs are declared in SPECIFICATION
@@ -610,7 +611,7 @@ END;
 /
 
 
--- Database Triggers ---------------------------------------------------------------------------------------------------------------
+-- Database Triggers -----------------------------------------------------------
 
 It is a named PL/SQL block and planned for particular event and timing
 IS executed implicit on that event 
